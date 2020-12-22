@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/main.css" rel="stylesheet" />
+
+		<script src="js/jquery-1.12.4.min.js"></script>
+		<script src="js/mui.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true
+			});
+		</script>
+		<script type="text/javascript">
+			//这是一个加载好友头像的函数
+			var curView = plus.webview.currentWebview(); //获取本页view
+			var friendimg = curView.friendimg; //接住从singlechats页面/friends通讯录页面传来的头像地址变量
+
+			function GetFriendimg() { //修改气泡头像函数，后面在templateJS中有调用
+				$('.name-card-img').attr('src', friendimg); //jquery修改气泡头像操作
+			};
+		</script>
+
+
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<!-- HEADER -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">Namecard</h1>
+		</header>
+		<!-- HEADER  END-->
+
+		<div class="mui-content">
+
+			<div class="name-card">
+				<img class="name-card-img" src="Nopic.png" onerror="GetFriendimg()" alt="" style="border-radius: 50%;" />
+				<!-- ↑上面一行气泡对应好友头像的默认src是一个不存在的图片，这样就可以触发后面的onerror属性，召唤GetFriendimg函数，把头像地址传入。 -->
+				<div id="">
+					<span class="name-card-name">Alice</span>
+				</div>
+				<button type="button" class="btn-chat">AGREE</button>
+				<div id="" class="remove-friend">
+					<a href="">Refuse this requst</a>
+				</div>
+			</div>
+
+
+		</div>
+
+
+		<script type="text/javascript">
+			//给namecard加载好友名称
+			mui.plusReady(function() {
+				//1.获取当前webView
+				var curView = plus.webview.currentWebview();
+
+				//2.获取在上一个界面里为了这一步定义好的name参数
+				var name = curView.name;
+
+				//3.将好友名称加载到title上
+				$('.name-card-name').html(name); //加载名称
+				var friendimg = curView.friendimg;
+
+			});
+		</script>
+
+
+
+	</body>
+
+</html>

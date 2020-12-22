@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link href="../css/main.css" rel="stylesheet"/>
+		
+		<script src="../js/jquery-1.12.4.min.js"></script>
+		<script src="../js/mui.js"></script>
+		<script src="../js/mui.min.js"></script>
+	<script>
+		mui.init({
+				swipeBack:true
+			});
+	</script>
+		
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+						}
+		</style>
+
+	</head>
+
+	<body>
+		
+		<script type="text/javascript">
+			
+			mui.plusReady(function () {
+
+				mui("body").on("tap",".friend-tonamecard",function(){
+					// 增加条件判断,判断当前点击的好友请求li的状态是agreed还是refused还是无(新请求).
+					// 如果是agreed:点开普通namecard页面,
+					// 如果是new:点开带有同意或拒绝的namecard_friendReq页面,
+					// 如果是refused:不产生任何页面跳转.
+					
+					//------------------------------------------------------------------------------------------------------
+					var friendState = this.getAttribute("rel");
+					//创建好友状态变数，储存每个a标签中rel的值（代表了该好友申请的状态，用来做下面的判断）。
+					var title = this.getAttribute("title");  //get到被点击的a标签的title值，也就是 好友名称
+					var friendProfileImg = this.childNodes[1].src; //get到被点击的标签的img子元素的src的值。以便于后面singlechat页面替换.注意下面img一定要挨着a标签，不然children会失效
+					
+					//开始进入判断
+					if(friendState == 'agreed'){ //如果该请求已经被同意，则打开namecard页面
+						
+					    mui.openWindow({
+					        url: "../namecard.html",
+					        id: "../namecard.html",
+					        extras:{
+					          //自定义扩展参数，可以用来处理页面间传值,比如把前面获取的好友名称传到聊天界面的title
+					    	  name: title,
+					    	  friendimg: friendProfileImg
+					        },
+					        show:{
+					          autoShow: true,//页面loaded事件发生后自动显示，默认为true
+					          aniShow: "slide-in-right",//页面显示动画，默认为”slide-in-right“；
+					          duration:200//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+					        },
+					        waiting:{
+					          autoShow:true,//自动显示等待框，默认为true
+					          title:'Loading...'//等待对话框上显示的提示内容
+					        }
+					    });
+					}else if(friendState == 'new'){
+				
+						mui.openWindow({
+						    url: "../namecard_requst.html",
+						    id: "../namecard_request.html",
+						    extras:{
+						      //自定义扩展参数，可以用来处理页面间传值,比如把前面获取的好友名称传到聊天界面的title
+							  name: title,
+							  friendimg: friendProfileImg
+						    },
+						    show:{
+						      autoShow: true,//页面loaded事件发生后自动显示，默认为true
+						      aniShow: "slide-in-right",//页面显示动画，默认为”slide-in-right“；
+						      duration:200//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+						    },
+						    waiting:{
+						      autoShow:true,//自动显示等待框，默认为true
+						      title:'Loading...'//等待对话框上显示的提示内容
+						    }
+						});
+					}
+			
+
+				});
+			});
+		</script>
+<!-- HEADER -->
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">Add New Friend</h1>
+	</header>
+<!-- HEADER  END-->	 
+	 
+	 <!-- SEARCH -->
+	 <div class="mui-content">
+	     <ul class="mui-table-view">
+	         <li class="mui-table-view-cell mui-media" style="height: 60px;">
+	             <div class="mui-input-row mui-search">
+	 			    <input type="search" class="mui-input-clear" placeholder="Friend's Email">
+	 			</div>
+	         </li>
+	     </ul>
+	     
+	    <br />
+		<div align="center">
+		   		<span style="color: darkgrey;">My Email: xxx@xxx.com</span>
+		   </div>
+		   
+		   <br />
+		    <br />
+		   <!-- SEARCH END-->
+		   
+		   
+		   <ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+		   	
+		   	<li  class="mui-table-view-divider">Friend Requests History</li>
+		   	<li data-value="" data-tags = "" class="mui-table-view-cell mui-media">
+				<!-- 每个a标签带有的rel属性在这里表示该好友请求的状态，有new，agreed和refused三种 -->
+		   		<a href="javascript:;" title="Cat" class="friend-tonamecard" rel="new">  
+		   			<img class="mui-media-object mui-pull-left" src="../images/profile11.jpg" >
+		   			<div class="mui-media-body">
+		   				<span class="friend-name">Cat</span>
+						<span class="request-result"></span>
+						<span class="mui-badge mui-badge-danger">New</span>
+		   				<p class="mui-ellipsis">Hi, I am Cat.</p>
+		   			</div>
+		   		</a>
+		   	</li>
+		   	
+		   	<li data-value="" data-tags = "" class="mui-table-view-cell mui-media">
+		   		<a href="javascript:;" title="Ben" class="friend-tonamecard" rel="agreed">
+		   			<img class="mui-media-object mui-pull-left" src="../images/profile10.jpg" >
+		   			<div class="mui-media-body">
+		   				<span class="friend-name">Ben</span>
+		   				<span class="request-result">Agreed</span>
+		   				<p class="mui-ellipsis">Hi, I am Ben.</p>
+		   			</div>
+		   		</a>
+		   	</li>
+		   	
+		   	<li data-value="" data-tags = "" class="mui-table-view-cell mui-media">
+		   		<a href="javascript:;" title="Vivi" class="friend-tonamecard" rel="refused">
+		   			<img class="mui-media-object mui-pull-left" src="../images/profile19.jpg" >
+		   			<div class="mui-media-body">
+		   				<span class="friend-name">Vivi</span>
+		   				<span class="request-result">Refused</span>
+		   				<p class="mui-ellipsis">Hi, I am Vivi.</p>
+		   			</div>
+		   		</a>
+		   	</li>
+		   	
+		   </ul>
+		   
+		</div>
+		
+		
+
+	 
+	 
+		
+	</body>
+
+</html>

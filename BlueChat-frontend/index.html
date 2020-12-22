@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/main.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init(); //初始化
+			//mui加载完成事件
+			mui.plusReady(function() {
+
+				//主页面是index，负责显示状态栏和底部导航，所以要做主页面子页面的渲染，首先把chats，friends，setting三个子页面定义成一个数组
+				var subPages = ["chats.html", "friends.html", "setting.html"];
+				//定义子页面的显示位置样式
+				var subPageStyle = {
+					top: "56px", //距离顶部56
+					bottom: "56px" //距离底部56
+				}
+				//将当前index页面作为主webView获取到
+				var mainView = plus.webview.currentWebview();
+				//遍历子页面数组，为每个子页面创建webView
+				for (var i = 0; i < subPages.length; i++) {
+					var url = subPages[i]; //定义了url之后根据url创建每个子页面的webview
+					//创建webView语法：plus.webView.create(url,id,style)，有三个参数，最终返回webview对象。
+					var subView = plus.webview.create(url, url, subPageStyle);
+
+					//然后要设置每个子view处于隐藏状态
+					subView.hide();
+					//再将每个子view加入到主view中
+					mainView.append(subView);
+				}
+				//默认显示chats页面
+				plus.webview.show(subPages[0]);
+
+				//把每个页面注册到导航点击事件(tap)中，注意onclick等网页事件在手机中无效
+				mui(".mui-bar-tab").on("tap", "a", function() {
+					//设置当前导航对应的子页面显示，就是根据指定的id设置webView显示
+					var id = this.getAttribute("href"); //获取this被点击a标签的href值作为id
+					plus.webview.show(id); //把id页面显示出来
+				})
+			});
+		</script>
+	</head>
+	<body>
+		<!-- 头部 -->
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">BlueChat</h1>
+		</header>
+		<!-- 底部导航 -->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="chats.html">
+				<span class="mui-icon mui-icon-chatbubble"></span>
+				<span class="mui-tab-label">Chats</span>
+				<span class="bar-active-line"></span>
+			</a>
+			<a class="mui-tab-item" href="friends.html">
+				<span class="mui-icon mui-icon-person"></span>
+				<span class="mui-tab-label">Friends</span>
+			</a>
+			<a class="mui-tab-item" href="setting.html">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">Setting</span>
+			</a>
+		</nav>
+		<!-- 	！在MUI中，bar（即便是底部bar）要放在content之前，不然就会导致主体最下面的内容被底部bar遮挡。！ -->
+
+	</body>
+</html>
